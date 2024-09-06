@@ -23,22 +23,22 @@ const Sidebar = () => {
                             <Globe className="mr-2" size={18} />
                             Explore Chats
                         </Link>
-                        <a href="#" className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md">
+                        <Link to="/org" className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md">
                             <LayoutDashboard className="mr-2" size={18} />
                             Switch Organization
-                        </a>
-                        <a href="#" className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md">
+                        </Link>
+                        <Link to="/leads" className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md">
                             <Briefcase className="mr-2" size={18} />
                             Business Leads
-                        </a>
-                        <a href="#" className="flex items-center text-blue-500 hover:bg-blue-50 p-2 rounded-md">
+                        </Link>
+                        <Link to="/" className="flex items-center text-blue-500 hover:bg-blue-50 p-2 rounded-md">
                             <Monitor className="mr-2" size={18} />
                             View Mind Map
-                        </a>
-                        <a href="#" className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md">
+                        </Link>
+                        <Link to="/team" className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md">
                             <Users className="mr-2" size={18} />
                             Manage Team
-                        </a>
+                        </Link>
                         <a href="#" className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md">
                             <Settings className="mr-2" size={18} />
                             Configure Chatbot
@@ -55,7 +55,7 @@ const Sidebar = () => {
                     <div className="text-blue-500 text-xs">SELECT ORG ▼</div>
                 </header>
 
-               
+
             </div>
         </>
     )
