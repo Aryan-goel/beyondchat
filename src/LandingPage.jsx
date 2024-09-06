@@ -1,12 +1,58 @@
 import React, { useState } from 'react';
-import { Menu, Search, Clock, Monitor, ChevronLeft } from 'lucide-react';
+import { Menu, Clock, Monitor, ChevronLeft, LayoutDashboard, Briefcase, Users, Settings, Globe, Edit3, Trash2 } from 'lucide-react';
 
 const LandingPage = () => {
-    const [searchResults, setSearchResults] = useState(3);
     const [isSidebarOpen, setSidebarOpen] = useState(false); // State for sidebar
+    const [isModalOpen, setModalOpen] = useState(false); // State for modal
+    const [cards, setCards] = useState([]); // State to store cards data
+    const [newCard, setNewCard] = useState({ title: '', description: '', link: '' }); // State for new card inputs
+    const [editingCardIndex, setEditingCardIndex] = useState(null); // State to track if editing
 
+    // Toggle sidebar open/close
     const toggleSidebar = () => {
-        setSidebarOpen(!isSidebarOpen); // Toggle sidebar open/close
+        setSidebarOpen(!isSidebarOpen);
+    };
+
+    // Toggle modal open/close
+    const toggleModal = () => {
+        setModalOpen(!isModalOpen);
+    };
+
+    // Handle change for modal inputs
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewCard((prevCard) => ({ ...prevCard, [name]: value }));
+    };
+
+    // Handle saving or editing card
+    const handleSaveCard = () => {
+        if (editingCardIndex !== null) {
+            // Update existing card
+            const updatedCards = cards.map((card, index) =>
+                index === editingCardIndex ? newCard : card
+            );
+            setCards(updatedCards);
+            setEditingCardIndex(null); // Reset editing index
+        } else {
+            // Add new card
+            setCards([...cards, newCard]);
+        }
+        // Reset the modal inputs
+        setNewCard({ title: '', description: '', link: '' });
+        // Close the modal
+        toggleModal();
+    };
+
+    // Handle card deletion
+    const handleDeleteCard = (index) => {
+        setCards(cards.filter((_, cardIndex) => cardIndex !== index));
+    };
+
+    // Handle editing card
+    const handleEditCard = (index) => {
+        setEditingCardIndex(index);
+        setNewCard(cards[index]); // Pre-fill modal with card data
+        toggleModal();
     };
 
     return (
@@ -19,13 +65,32 @@ const LandingPage = () => {
                         <ChevronLeft className="text-gray-600" size={24} />
                     </button>
 
-                    <div className="space-y-2 mt-8"> {/* Move down to make space for arrow */}
-                        <a href="#" className="block text-gray-700">Explore Chats</a>
-                        <a href="#" className="block text-gray-700">Switch Organization</a>
-                        <a href="#" className="block text-gray-700">Business Leads</a>
-                        <a href="#" className="block text-blue-500">View Mind Map</a>
-                        <a href="#" className="block text-gray-700">Manage Team</a>
-                        <a href="#" className="block text-gray-700">Configure Chatbot</a>
+                    {/* Menu Items */}
+                    <div className="space-y-2 mt-8">
+                        <a href="#" className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md">
+                            <Globe className="mr-2" size={18} />
+                            Explore Chats
+                        </a>
+                        <a href="#" className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md">
+                            <LayoutDashboard className="mr-2" size={18} />
+                            Switch Organization
+                        </a>
+                        <a href="#" className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md">
+                            <Briefcase className="mr-2" size={18} />
+                            Business Leads
+                        </a>
+                        <a href="#" className="flex items-center text-blue-500 hover:bg-blue-50 p-2 rounded-md">
+                            <Monitor className="mr-2" size={18} />
+                            View Mind Map
+                        </a>
+                        <a href="#" className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md">
+                            <Users className="mr-2" size={18} />
+                            Manage Team
+                        </a>
+                        <a href="#" className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md">
+                            <Settings className="mr-2" size={18} />
+                            Configure Chatbot
+                        </a>
                     </div>
                 </div>
             </div>
@@ -40,7 +105,7 @@ const LandingPage = () => {
 
                 <main className="flex-1 flex flex-col overflow-hidden p-3">
                     <div className="flex-none space-y-2 mb-3">
-                        <button className="w-full bg-blue-500 text-white px-3 py-2 rounded-md text-sm">
+                        <button className="w-full bg-blue-500 text-white px-3 py-2 rounded-md text-sm" onClick={() => { setEditingCardIndex(null); toggleModal(); }}>
                             + ADD DATA
                         </button>
                         <button className="w-full bg-pink-500 text-white px-3 py-2 rounded-md text-sm flex items-center justify-center">
@@ -53,44 +118,72 @@ const LandingPage = () => {
                         </button>
                     </div>
 
-                    <div className="flex-none bg-white rounded-md p-3 mb-3">
-                        <input
-                            type="text"
-                            placeholder="Search"
-                            className="w-full border rounded-md p-2 mb-2 text-sm bg-white"
-                        />
-                        <div className="flex items-center">
-                            <span className="mr-2 text-xs">Results</span>
-                            <select
-                                value={searchResults}
-                                onChange={(e) => setSearchResults(Number(e.target.value))}
-                                className="border bg-white rounded-md p-1 mr-2 text-xs text-black"
-                            >
-                                {[...Array(9)].map((_, index) => (
-                                    <option key={index + 1} value={index + 1}>{index + 1}</option>
-                                ))}
-                            </select>
-                            <button className="bg-blue-500 text-white px-3 py-1 rounded-md text-xs">
-                                SEARCH
-                            </button>
+                    {/* Modal */}
+                    {isModalOpen && (
+                        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                            <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+                                <h2 className="text-lg font-semibold mb-4">{editingCardIndex !== null ? 'Edit Data' : 'Add Data'}</h2>
+                                <div className="flex space-x-2 mb-4">
+                                    <button className="px-3 py-1 bg-blue-500 text-white rounded-md">Text</button>
+                                    <button className="px-3 py-1 bg-gray-200 text-gray-600 rounded-md">PDF</button>
+                                    <button className="px-3 py-1 bg-gray-200 text-gray-600 rounded-md">EPUB</button>
+                                    <button className="px-3 py-1 bg-gray-200 text-gray-600 rounded-md">Link</button>
+                                    <button className="px-3 py-1 bg-gray-200 text-gray-600 rounded-md">CSV</button>
+                                </div>
+                                <input
+                                    type="text"
+                                    placeholder="Title"
+                                    name="title"
+                                    value={newCard.title}
+                                    onChange={handleInputChange}
+                                    className="w-full border rounded-md p-2 mb-2 text-black"
+                                />
+                                <textarea
+                                    placeholder="Description"
+                                    name="description"
+                                    value={newCard.description}
+                                    onChange={handleInputChange}
+                                    className="w-full border rounded-md p-2 mb-2 text-black"
+                                    rows={3}
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="Read More/Source Link"
+                                    name="link"
+                                    value={newCard.link}
+                                    onChange={handleInputChange}
+                                    className="w-full border rounded-md p-2 mb-2 text-black"
+                                />
+                                <div className="flex justify-end space-x-2">
+                                    <button
+                                        className="px-4 py-2 bg-gray-200 rounded-md"
+                                        onClick={toggleModal}
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button className="px-4 py-2 bg-blue-500 text-white rounded-md" onClick={handleSaveCard}>
+                                        {editingCardIndex !== null ? 'Update' : 'Save'}
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     <div className="flex-1 overflow-y-auto">
-                        {[
-                            "Do you work on WhatsApp? Yes, we do offer our services on WhatsApp!",
-                            "I want to test your chatbot. That's great to hear! You can continue chatting with me to test.",
-                            "Will the Startup Plan address the concern I mentioned earlier? Yes, the Startup Plan will.",
-                            "What is the cost of IVF? I can't provide specific information on IVF costs, but I can tell you."
-                        ].map((item, index) => (
-                            <div key={index} className="bg-white rounded-md p-3 mb-3">
-                                <p className="mb-2 text-sm">{item}</p>
-                                <div className="text-xs text-gray-500 mb-2">TEXT</div>
+                        {cards.map((card, index) => (
+                            <div key={index} className="bg-white rounded-md p-3 mb-3 relative">
+                                <p className="mb-2 text-sm font-semibold text-black">{card.title}</p>
+                                <div className="text-xs text-gray-500 mb-2 text-black">{card.description}</div>
                                 <div className="flex justify-between items-center text-xs">
-                                    <a href="#" className="text-gray-600 underline">View Source</a>
-                                    <div className="text-gray-400">
-                                        {1722643200 - index * 11059200} days ago
-                                    </div>
+                                    <a href={card.link} className="text-gray-600 underline">View Source</a>
+                                </div>
+                                <div className="absolute bottom-2 right-2 space-x-2">
+                                    <button className="text-blue-500 hover:text-blue-700" onClick={() => handleEditCard(index)}>
+                                        <Edit3 size={26} />
+                                    </button>
+                                    <button className="text-red-500 hover:text-red-700" onClick={() => handleDeleteCard(index)}>
+                                        <Trash2 size={26} />
+                                    </button>
                                 </div>
                             </div>
                         ))}
