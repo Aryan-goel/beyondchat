@@ -1,13 +1,18 @@
-import React, { useState } from 'react'
-import { Menu, Clock, Monitor, ChevronLeft, LayoutDashboard, Briefcase, Users, Settings, Globe, Edit3, Trash2 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Menu, ChevronLeft, LayoutDashboard, Briefcase, Users, Settings, Globe, Monitor } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 
 const Sidebar = () => {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
+    const location = useLocation();
 
     const toggleSidebar = () => {
         setSidebarOpen(!isSidebarOpen);
     };
+
+    // Function to determine if the current path matches the link's path
+    const isActive = (path) => location.pathname === path;
+
     return (
         <>
             <div className={`fixed inset-y-0 left-0 w-64 bg-white shadow-lg transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out`}>
@@ -19,23 +24,23 @@ const Sidebar = () => {
 
                     {/* Menu Items */}
                     <div className="space-y-2 mt-8">
-                        <Link to="/explore" className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md">
+                        <Link to="/explore" className={`flex items-center p-2 rounded-md ${isActive('/explore') ? 'text-blue-500 bg-blue-50' : 'text-gray-700 hover:bg-gray-100'}`}>
                             <Globe className="mr-2" size={18} />
                             Explore Chats
                         </Link>
-                        <Link to="/org" className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md">
+                        <Link to="/org" className={`flex items-center p-2 rounded-md ${isActive('/org') ? 'text-blue-500 bg-blue-50' : 'text-gray-700 hover:bg-gray-100'}`}>
                             <LayoutDashboard className="mr-2" size={18} />
                             Switch Organization
                         </Link>
-                        <Link to="/leads" className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md">
+                        <Link to="/leads" className={`flex items-center p-2 rounded-md ${isActive('/leads') ? 'text-blue-500 bg-blue-50' : 'text-gray-700 hover:bg-gray-100'}`}>
                             <Briefcase className="mr-2" size={18} />
                             Business Leads
                         </Link>
-                        <Link to="/" className="flex items-center text-blue-500 hover:bg-blue-50 p-2 rounded-md">
+                        <Link to="/" className={`flex items-center p-2 rounded-md ${isActive('/') ? 'text-blue-500 bg-blue-50' : 'text-gray-700 hover:bg-gray-100'}`}>
                             <Monitor className="mr-2" size={18} />
                             View Mind Map
                         </Link>
-                        <Link to="/team" className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md">
+                        <Link to="/team" className={`flex items-center p-2 rounded-md ${isActive('/team') ? 'text-blue-500 bg-blue-50' : 'text-gray-700 hover:bg-gray-100'}`}>
                             <Users className="mr-2" size={18} />
                             Manage Team
                         </Link>
@@ -54,11 +59,9 @@ const Sidebar = () => {
                     <h1 className="text-lg font-semibold">Chatbot Mind Map</h1>
                     <div className="text-blue-500 text-xs">SELECT ORG ▼</div>
                 </header>
-
-
             </div>
         </>
-    )
-}
+    );
+};
 
 export default Sidebar;
