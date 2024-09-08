@@ -88,6 +88,12 @@ const LandingPage = () => {
                                 <option value={10}>10</option>
                             </select>
                         </div>
+                        <button
+                            className="bg-blue-500 text-white  py-2 rounded-md"
+                            onClick={() => { }}
+                        >
+                            Search
+                        </button>
                     </main>
                 </div>
                 {/* Modal */}
