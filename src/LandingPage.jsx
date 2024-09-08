@@ -11,18 +11,18 @@ const LandingPage = () => {
     const [buttonText, setButtonText] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
     const [resultsCount, setResultsCount] = useState(3);
-    // Toggle modal open/close
+
     const toggleModal = () => {
         setModalOpen(!isModalOpen);
     };
 
-    // Handle change for modal inputs
+    
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setNewCard((prevCard) => ({ ...prevCard, [name]: value }));
     };
 
-    // Handle saving or editing card
+    
     const handleSaveCard = () => {
         if (editingCardIndex !== null) {
             const updatedCards = cards.map((card, index) =>
@@ -38,12 +38,12 @@ const LandingPage = () => {
         toggleModal();
     };
 
-    // Handle card deletion
+
     const handleDeleteCard = (index) => {
         setCards(cards.filter((_, cardIndex) => cardIndex !== index));
     };
 
-    // Handle editing card
+   
     const handleEditCard = (index) => {
         setEditingCardIndex(index);
         setNewCard(cards[index]);

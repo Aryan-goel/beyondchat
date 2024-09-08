@@ -10,19 +10,19 @@ const Sidebar = () => {
         setSidebarOpen(!isSidebarOpen);
     };
 
-    // Function to determine if the current path matches the link's path
+    
     const isActive = (path) => location.pathname === path;
 
     return (
         <>
             <div className={`fixed inset-y-0 left-0 w-64 bg-white shadow-lg transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out`}>
                 <div className="p-4 space-y-4 relative">
-                    {/* Close Arrow */}
+                    
                     <button onClick={toggleSidebar} className="absolute top-2 right-2">
                         <ChevronLeft className="text-gray-600" size={24} />
                     </button>
 
-                    {/* Menu Items */}
+                   
                     <div className="space-y-2 mt-8">
                         <Link to="/explore" className={`flex items-center p-2 rounded-md ${isActive('/explore') ? 'text-blue-500 bg-blue-50' : 'text-gray-700 hover:bg-gray-100'}`}>
                             <Globe className="mr-2" size={18} />
@@ -52,7 +52,7 @@ const Sidebar = () => {
                 </div>
             </div>
 
-            {/* Page Content */}
+         
             <div className={`flex-1 flex flex-col overflow-hidden ${isSidebarOpen ? 'ml-64' : ''}`}>
                 <header className="bg-white p-3 flex justify-between items-center border-b">
                     <Menu className="text-gray-600 cursor-pointer" size={20} onClick={toggleSidebar} />
